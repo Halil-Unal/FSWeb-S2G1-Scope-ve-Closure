@@ -64,9 +64,18 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
-}
+function takimSkoru(toplamSayi){
+  
+  const ustSayi=10;
+  const altSayi=25;
+   return Math.floor(Math.random() * (altSayi - ustSayi +1)) + ustSayi;
+   
+
+  }  
+console.log(takimSkoru());
+
+
+
 
 
 
@@ -85,11 +94,34 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
   "KonukTakim": 80
 }
 */ 
+  
+  
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+
+function macSonucu(skor,no){
+  
+
+let evsahibiSkor =0;
+let konukSkor = 0;
+for(let i=0;i<no;i++){
+
+evsahibiSkor=evsahibiSkor +skor();
 }
 
+for(let i=0;i<no;i++){
+
+  konukSkor=konukSkor + skor(); 
+  }
+
+const obje ={
+"EvSahibi" : evsahibiSkor,
+"KonukTakim" : konukSkor,
+
+};
+
+return obje ;
+}
+console.log(macSonucu(takimSkoru,4));
 
 
 
@@ -109,10 +141,22 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function periyotSkoru(newObject) {
+  
+  
+  const evsahibi=newObject();
+  const konuk= newObject();
 
+
+const list= {
+ EvSahibi  : evsahibi,
+ KonukTakim : konuk,
+
+
+};
+return list ;
 }
+console.log(periyotSkoru(takimSkoru));
 
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
@@ -146,11 +190,42 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
+function skorTabelasi(periodScoreCb, teamScoreCb, quarter) {
   /*Kodunuzu buraya yazınız*/
+  // Örnekten kopyala yapıştır
+  const scoreArray = [];
+
+  let teamScores = {
+    EvSahibi: 0,
+    KonukTakim: 0,
+  };
+  for (let i = 1; i <= quarter; i++) {
+    const periodScoreResult = periodScoreCb(teamScoreCb);
+    const hSc = periodScoreResult.EvSahibi;
+    const gSc = periodScoreResult.KonukTakim;
+    teamScores.EvSahibi = teamScores.EvSahibi + hSc;
+    teamScores.KonukTakim = teamScores.KonukTakim + gSc;
+    const scoreBacktick = `${i}. Periyot: Ev Sahibi ${hSc} - Konuk Takım ${gSc}`;
+    scoreArray.push(scoreBacktick);
+    // eğer son quarterda isek ve skorlar aynıysa
+    if (quarter == i && teamScores.EvSahibi == teamScores.KonukTakim) {
+      const periodScoreResultE = periodScoreCb(teamScoreCb);
+      const hScE = periodScoreResult.EvSahibi;
+      const gScE = periodScoreResult.KonukTakim;
+      teamScores.EvSahibi = teamScores.EvSahibi + hScE;
+      teamScores.KonukTakim = teamScores.KonukTakim + gScE;
+      scoreArray.push(`1. Uzatma: Ev Sahibi ${hScE} - Konuk Takım ${gScE}`);
+    }
+  }
+
+  scoreArray.push(
+    `Maç Sonucu: Ev Sahibi ${teamScores.EvSahibi} - Konuk Takım ${teamScores.KonukTakim}`
+  );
+
+  return [...scoreArray];
 }
 
-
+console.log("Görev 5", skorTabelasi(periyotSkoru, takimSkoru, 4));
 
 
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
